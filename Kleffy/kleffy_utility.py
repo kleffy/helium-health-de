@@ -2,8 +2,7 @@ import pandas as pd
 import os
 
 def read_file(filename, path=None):
-    """
-    Reads a file into memory and returns a dataframe.
+    """ Reads a file into memory and returns a dataframe.
 
     Args:
         filename (str): name of file to read.
@@ -13,6 +12,9 @@ def read_file(filename, path=None):
         ValueError: File type is not supported.
         ValueError: Invalid file name
         Exception: Any other error message
+
+    Returns:
+        [DataFrame]: The file read into memory as a DataFrame.
     """
     df = pd.DataFrame()
     if len(filename) > 1:
@@ -41,6 +43,9 @@ def ensure_directory_exist(directory):
 
     Args:
         directory (str): The name of the directory to check.
+
+    Raises:
+        Exception: Any error message
     """
     try:
         if not os.path.exists(directory):
@@ -56,6 +61,9 @@ def save_as_csv(df, filename, path=None, allow_index=False):
         filename (str): The name given to the CSV file
         path (str, optional): Path to where to save the file. Defaults to None.
         allow_index (bool, optional): If True, Save existing dataframe index as a column in the saved CSV file. Defaults to False.
+
+    Raises:
+        Exception: Any error message
     """
     try:
         if path:
@@ -80,6 +88,9 @@ def remove_special_characters(text):
     Args:
         text (str): Source text to remove special characters.
 
+    Raises:
+        Exception: Any other error message
+
     Returns:
         [str]: Text with special characters removed.
     """
@@ -91,26 +102,19 @@ def remove_special_characters(text):
         print('remove_special_characters: ' + repr(e))
     return txt
 
-def get_df_subset_from_col_range(df, start_col, end_col):
-    """ Select a subset from a dataframe given a range of columns.
+def create_year_month_day_column(dataframe, date_column):
+    """ Creates a year, month, and a day name columns from the specified date column.
 
     Args:
-        df (DataFrame): The DataFrame to select from.
-        start_col (str): The start column range to select from.
-        end_col (str): The end column range to select from.
+        dataframe (DataFrame): Source DataFrame.
+        date_column (str): Date column name.
+
+    Raises:
+        Exception: Any other error message
 
     Returns:
-        DataFrame: The subset of the DataFrame selected
+        [DataFrame]: A new DataFrame with year, month, and day name columns added.
     """
-    dd = pd.DataFrame()
-    try:
-        dd = df.loc[:, start_col:end_col]
-    except Exception as e:
-        print('get_df_subset_from_col_range: ' + repr(e))
-    
-    return dd
-
-def create_year_month_day_column(dataframe, date_column):
     df = dataframe
     try:
 
@@ -126,6 +130,23 @@ def create_year_month_day_column(dataframe, date_column):
     return df
 
 def merge_dataframe(df1, df2, left_on, right_on, sort=False, right_suffix=None, drop_rcolumns=[]):
+    """ Merge two dataframes into one.
+
+    Args:
+        df1 ([DataFrame]): Left DataFrame
+        df2 ([DataFrame]): Right DataFrame
+        left_on ([str]): Key to merge on from the left dataframe
+        right_on ([str]): Key to merge on from the right dataframe
+        sort (bool, optional): Sort the merged result. Defaults to False.
+        right_suffix ([str], optional): suffix to append to the right dataframe in case of duplicate column names. Defaults to None.
+        drop_rcolumns (list, optional): List of column names to drop from the right dataframe. Defaults to [].
+
+    Raises:
+        Exception: Any other error message
+
+    Returns:
+        [DataFrame]: Returns a new merged DataFrame.
+    """
     df = pd.DataFrame()
     try:
         if right_suffix:
